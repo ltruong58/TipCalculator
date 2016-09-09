@@ -6,6 +6,8 @@ package edu.orangecoastcollege.cs273.ltruong58.tipcalculator;
  * Created by ltruong58 on 9/8/2016.
  */
 public class RestaurantBill {
+    public static final double RECOMMEND_TIP = 0.2;
+
     private double mAmount;
     private double mTipPercent;
     private double mTipAmount;
@@ -14,7 +16,7 @@ public class RestaurantBill {
 
     public RestaurantBill() {
         mAmount = 0.0;
-        mTipPercent = 0.0;
+        mTipPercent = RECOMMEND_TIP;
         mTipAmount = 0.0;
         mTotalAmount = 0.0;
     }
