@@ -4,4 +4,5 @@
     <string name="total_amount_textview">Total</string>
     <string name="tip_amount_textview">Tip</string>
     <string name="default_value_amount">$0.00</string>
+    <string name="recommend_tip_percentage">20%</string>
 </resources>
