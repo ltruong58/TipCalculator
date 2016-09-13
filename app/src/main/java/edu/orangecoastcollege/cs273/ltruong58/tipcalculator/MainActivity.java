@@ -1,13 +1,13 @@
 package edu.orangecoastcollege.cs273.ltruong58.tipcalculator;
 
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,26 +47,6 @@ public class MainActivity extends AppCompatActivity {
         // Define a listener for the percentSeekBar
         percentSeekBar.setOnSeekBarChangeListener(percentChangedListener);
 
-        /*
-        percentSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentBill.setTipPercent( (double) progress / 100.0);
-                percentTextView.setText(String.valueOf(progress) + "%");
-                updateViews();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        }
-        );
-        */
-
     }
 
     private SeekBar.OnSeekBarChangeListener percentChangedListener = new SeekBar.OnSeekBarChangeListener() {
@@ -100,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             // Try to get the amount from amountEditText
             try {
-                if(charSequence.equals("")){
+                if(charSequence.length() == 0){
                     currentBill.setAmount(0.0);
                 }
                 else {
