@@ -7,11 +7,9 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
-
-    final DecimalFormat  precision = new DecimalFormat("0.00");
 
     //Associate the controller with the needed views
     private EditText amountEditText;
@@ -21,14 +19,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView totalAmountTextView;
     private SeekBar percentSeekBar;
 
-
     // Associate the controller with the needed model
     RestaurantBill currentBill = new RestaurantBill();
+    NumberFormat myCurrency = NumberFormat.getCurrencyInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -50,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 currentBill.setTipPercent( (double) progress / 100.0);
                 percentTextView.setText(String.valueOf(progress) + "%");
-                tipAmountTextView.setText("$" + precision.format(currentBill.getTipAmount()));
-                totalAmountTextView.setText("$" + precision.format(currentBill.getTotalAmount()));
+                tipAmountTextView.setText(myCurrency.format(currentBill.getTipAmount()));
+                totalAmountTextView.setText(myCurrency.format(currentBill.getTotalAmount()));
             }
 
             @Override
@@ -78,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 double amount = Double.parseDouble(charSequence.toString()) / 100.00;
                 currentBill.setAmount(amount);
-                amountTextView.setText("$" + precision.format(currentBill.getAmount()));
-                tipAmountTextView.setText("$" + precision.format(currentBill.getTipAmount()));
-                totalAmountTextView.setText("$" + precision.format(currentBill.getTotalAmount()));
+                tipAmountTextView.setText(myCurrency.format(currentBill.getTipAmount()));
+                totalAmountTextView.setText(myCurrency.format(currentBill.getTotalAmount()));
+                amountTextView.setText(myCurrency.format(currentBill.getAmount()));
             }
             catch(NumberFormatException e){
                 amountEditText.setText("");
