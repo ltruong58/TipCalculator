@@ -1,5 +1,6 @@
 package edu.orangecoastcollege.cs273.ltruong58.tipcalculator;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,6 +12,9 @@ import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static NumberFormat myCurrency = NumberFormat.getCurrencyInstance();
+    private static NumberFormat myPercent = NumberFormat.getPercentInstance();
+
     //Associate the controller with the needed views
     private EditText amountEditText;
     private TextView amountTextView;
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Associate the controller with the needed model
     RestaurantBill currentBill = new RestaurantBill();
-    NumberFormat myCurrency = NumberFormat.getCurrencyInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,26 +45,50 @@ public class MainActivity extends AppCompatActivity {
         amountEditText.addTextChangedListener(amountTextChangedListener);
 
         // Define a listener for the percentSeekBar
+        percentSeekBar.setOnSeekBarChangeListener(percentChangedListener);
+
+        /*
         percentSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 currentBill.setTipPercent( (double) progress / 100.0);
                 percentTextView.setText(String.valueOf(progress) + "%");
-                tipAmountTextView.setText(myCurrency.format(currentBill.getTipAmount()));
-                totalAmountTextView.setText(myCurrency.format(currentBill.getTotalAmount()));
+                updateViews();
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
-        });
+        }
+        );
+        */
+
     }
+
+    private SeekBar.OnSeekBarChangeListener percentChangedListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            currentBill.setTipPercent( (double) progress / 100.0);
+
+            percentTextView.setText(myPercent.format(currentBill.getTipPercent()));
+
+            updateViews();
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
 
     private TextWatcher amountTextChangedListener = new TextWatcher() {
         @Override
@@ -72,15 +100,25 @@ public class MainActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             // Try to get the amount from amountEditText
             try {
-                double amount = Double.parseDouble(charSequence.toString()) / 100.00;
-                currentBill.setAmount(amount);
-                tipAmountTextView.setText(myCurrency.format(currentBill.getTipAmount()));
-                totalAmountTextView.setText(myCurrency.format(currentBill.getTotalAmount()));
-                amountTextView.setText(myCurrency.format(currentBill.getAmount()));
+                if(charSequence.equals("")){
+                    currentBill.setAmount(0.0);
+                }
+                else {
+                    double amount = Double.parseDouble(charSequence.toString()) / 100.00;
+                    currentBill.setAmount(amount);
+                }
+
             }
             catch(NumberFormatException e){
                 amountEditText.setText("");
             }
+            // No exception, input is valid:
+
+
+            // Set the bill amount
+            amountTextView.setText(myCurrency.format(currentBill.getAmount()));
+
+            updateViews();
         }
 
         @Override
@@ -88,4 +126,13 @@ public class MainActivity extends AppCompatActivity {
             // Do nothing
         }
     };
+
+    private void updateViews(){
+
+        // Set the tip amount
+        tipAmountTextView.setText(myCurrency.format(currentBill.getTipAmount()));
+
+        // Set the total amount
+        totalAmountTextView.setText(myCurrency.format(currentBill.getTotalAmount()));
+    }
 }
